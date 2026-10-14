@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="lead">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -31,7 +31,6 @@
 <link rel="preload" href="fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/onest.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/mono.woff2" as="font" type="font/woff2" crossorigin>
-<script>try{if(sessionStorage.getItem('u-seen'))document.documentElement.classList.add('seen');sessionStorage.setItem('u-seen','1')}catch(e){}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://ustrema.com/#org","name":"Ustrema","alternateName":["Устрема","USTREMA LTD","УСТРЕМА ООД"],"legalName":"USTREMA LTD","url":"https://ustrema.com/","logo":{"@type":"ImageObject","url":"https://ustrema.com/assets/icon-512.png","width":512,"height":512},"image":"https://ustrema.com/assets/og.jpg","description":"Ustrema is a Sofia-based Microsoft Power Platform, Copilot and Dynamics 365 practice. Governance first, then delivery that scales. Launching soon.","slogan":"Momentum with direction.","email":"hello@ustrema.com","foundingDate":"2026-09-30","foundingLocation":{"@type":"Place","name":"Sofia, Bulgaria"},"address":{"@type":"PostalAddress","addressLocality":"Sofia","addressCountry":"BG"},"areaServed":[{"@type":"Country","name":"Bulgaria"},{"@type":"Place","name":"European Union"}],"knowsAbout":["Microsoft Power Platform","Power Platform governance","Power Apps","Power Automate","Power BI","Dataverse","Microsoft Copilot Studio","Copilot and AI agent governance","Microsoft Purview","Microsoft Dynamics 365","Managed Environments","Data loss prevention (DLP) policies","Center of Excellence (CoE)"],"knowsLanguage":["en","bg"],"contactPoint":{"@type":"ContactPoint","contactType":"sales","email":"hello@ustrema.com","availableLanguage":["English","Bulgarian"]},"sameAs":["https://github.com/ustrema"]},{"@type":"WebSite","@id":"https://ustrema.com/#website","url":"https://ustrema.com/","name":"Ustrema","inLanguage":["en","bg"],"publisher":{"@id":"https://ustrema.com/#org"}},{"@type":"WebPage","@id":"https://ustrema.com/#page","url":"https://ustrema.com/","name":"Ustrema · Power Platform, Copilot & Dynamics 365 practice","description":"Ustrema is a Sofia-based Microsoft Power Platform, Copilot and Dynamics 365 practice. Governance first, then delivery that scales. Launching soon.","inLanguage":"en","isPartOf":{"@id":"https://ustrema.com/#website"},"about":{"@id":"https://ustrema.com/#org"},"primaryImageOfPage":"https://ustrema.com/assets/og.jpg","dateModified":"2026-10-14"}]}</script>
 <style>
 @font-face{font-family:'Manrope';src:url('fonts/manrope.woff2') format('woff2');font-weight:600 800;font-display:swap}
@@ -60,7 +59,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .skip:focus{top:16px}
 
 /* Layers: field 0, content 2 */
-#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;opacity:0;transition:opacity .6s var(--ease)}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;opacity:0;transition:opacity 1.4s cubic-bezier(.22,1,.36,1)}
 #field.on{opacity:1}
 
 .stage{position:relative;z-index:2;min-height:100dvh;display:grid;grid-template-rows:auto 1fr auto;padding:clamp(20px,3.4vw,44px) var(--gutter) clamp(20px,3vw,36px);max-width:1680px;margin:0 auto}
@@ -80,24 +79,32 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 
 /* Hero */
 .hero{align-self:center;padding:clamp(40px,7vh,96px) 0 clamp(32px,6vh,72px);max-width:880px}
-.logo{position:relative;width:clamp(210px,31vw,470px);aspect-ratio:602.67/117.7;overflow:hidden;margin:0 0 clamp(36px,6vh,64px) -.4%;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.logo{position:relative;width:clamp(210px,31vw,470px);aspect-ratio:602.67/117.7;margin:0 0 clamp(36px,6vh,64px) -.4%}
+.logo-3d{position:absolute;inset:0}
 .logo svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.logo .lt,.logo .hook{fill:var(--cream)}
-.logo .blade{fill:var(--magenta)}
-.logo svg{animation:rise 1s var(--ease) both}
-.logo .blade{animation-duration:1.2s;animation-delay:.12s}
-.logo .hook{animation-delay:.26s}
-.logo .lt{animation-delay:calc(.36s + var(--i) * 45ms)}
-@keyframes rise{from{transform:translateY(101%)}to{transform:none}}
+.logo .lt,.logo .hook{color:var(--cream)}
+.logo .blade{color:var(--magenta)}
+/* Drawn by hand: each part is traced as an outline, then fills in as the outline fades.
+   Final state lives in the base styles, so reduced motion simply shows the finished logo. */
+.logo path{fill:currentColor;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round;stroke-dasharray:1;stroke-opacity:0;
+  animation:draw 2.3s cubic-bezier(.45,0,.25,1) var(--d,0s) both}
+.logo .blade{--d:.15s}
+.logo .hook{--d:.35s}
+.logo .lt{--d:calc(.6s + var(--i) * 95ms)}
+@keyframes draw{
+  0%{stroke-dashoffset:1;stroke-opacity:1;fill-opacity:0}
+  62%{stroke-dashoffset:0;stroke-opacity:1;fill-opacity:0}
+  100%{stroke-dashoffset:0;stroke-opacity:0;fill-opacity:1}
+}
 
 h1{font-family:var(--f-display);font-weight:800;font-size:clamp(42px,6.4vw,96px);letter-spacing:-.035em;line-height:1.02;margin:0;max-width:12ch;text-wrap:balance}
-h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:calc(.6s + var(--i) * 70ms)}
-@keyframes word{from{transform:translateY(.32em);opacity:.04}to{transform:none;opacity:1}}
+h1 .wi{display:inline-block;animation:word 1.4s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(1.05s + var(--i) * 90ms)}
+@keyframes word{from{transform:translateY(.22em);opacity:.04}to{transform:none;opacity:1}}
 .sub{font-size:clamp(17px,1.35vw,20px);line-height:1.5;color:var(--cream-72);max-width:44ch;margin:clamp(20px,3vh,28px) 0 0}
 .cta{display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px;margin-top:clamp(32px,5vh,48px)}
-.in{animation:in .9s var(--ease) both}
-@keyframes in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-.d1{animation-delay:.85s}.d2{animation-delay:.95s}.d3{animation-delay:1.05s}
+.in{animation:in 1.3s cubic-bezier(.22,1,.36,1) both}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.d1{animation-delay:1.3s}.d2{animation-delay:1.45s}.d3{animation-delay:1.6s}
 
 .btn-wrap{display:inline-block;transition:transform .6s var(--ease)}
 .btn{position:relative;display:inline-flex;align-items:center;gap:14px;padding:19px 30px 19px 32px;background:var(--cream);color:var(--ink);font-family:var(--f-display);font-weight:700;font-size:17px;letter-spacing:-.01em;text-decoration:none;white-space:nowrap;isolation:isolate;overflow:hidden;
@@ -125,11 +132,17 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
 .door{font-family:var(--f-display);font-weight:600;font-size:clamp(17px,1.5vw,22px);letter-spacing:-.015em;line-height:1.3;min-height:2.6em;max-width:36ch;margin:0}
 .door span{display:inline-block}
 .meta{justify-self:end;text-align:right;font-size:13px;color:var(--cream-58);line-height:1.6;max-width:46ch;margin:0}
+.meta{text-shadow:0 0 6px var(--ink),0 0 14px var(--ink)}
 .meta .who{color:var(--cream-72);display:block}
 .meta small{display:block;font-size:11.5px;margin-top:6px}
 
-/* Second visit in the session (e.g. after switching language): skip the long intro */
-.seen .logo svg,.seen h1 .wi,.seen .in{animation-delay:0s!important;animation-duration:.45s!important}
+/* Logo in the header: a compact brand mark, so the headline carries the hero */
+.logo--sm{width:clamp(112px,9.5vw,142px);margin:0}
+.hero .label{margin:0 0 clamp(18px,3vh,28px)}
+/* Logo as the hero: the line underneath steps back to a quieter subtitle */
+.lead h1{font-weight:600;font-size:clamp(24px,2.9vw,42px);letter-spacing:-.025em;line-height:1.15;color:var(--cream-72);max-width:24ch}
+.lead .logo{width:clamp(250px,40vw,600px);margin-bottom:clamp(24px,4vh,40px)}
+
 
 @media (max-width:767px){
   #field.on{opacity:.5}
@@ -145,6 +158,7 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+
 <canvas id="field" aria-hidden="true"></canvas>
 
 <div class="stage">
@@ -157,17 +171,17 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
   </header>
 
   <main class="hero" id="main">
-    <div class="logo" role="img" aria-label="Ustrema">
-      <svg class="hook" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path d="M0.20 25.45L28.10 41.56L28.10 70.01C28.10 86.95 43.56 100.67 62.62 100.67C72.09 100.67 80.67 97.29 86.90 91.81C76.48 107.48 60.54 117.50 42.68 117.50C19.22 117.50 0.20 98.20 0.20 74.39L0.20 25.45Z"/></svg>
-      <svg class="blade" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path d="M60.30 19.71L94.10 0.20L94.10 63.76C94.10 78.31 78.97 90.10 60.30 90.10L60.30 19.71Z"/></svg>
-      <svg class="lt" style="--i:0" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path d="M107.96 116.42C107.96 116.37 107.86 116.85 107.86 116.75L107.86 99.25C107.86 99.05 107.98 98.54 108.01 98.39C108.06 98.38 108.53 98.14 108.63 98.14L144.40 98.14C152.26 98.08 153.63 85.82 146.51 84.24L134.38 81.55C129.66 80.50 124.80 79.79 120.52 77.39C102.27 67.16 105.64 39.92 124.59 32.62C127.10 31.65 130.01 30.50 132.73 30.45L170.17 30.45C170.29 30.45 170.71 30.67 170.78 30.68C170.82 30.81 171.13 30.28 171.13 30.45L171.13 42.73C171.16 44.69 171.31 46.83 170.98 48.67C170.89 48.69 170.39 48.99 170.25 48.99L135.21 48.99C126.91 49.07 125.55 60.59 133.81 62.24L151.72 65.84C154.67 66.43 157.56 68.26 160.02 69.89C176.85 81.05 174.38 106.98 155.54 114.49C153.35 115.36 150.56 116.71 148.17 116.75L108.71 116.75C108.56 116.75 108.06 116.44 107.96 116.42Z"/></svg>
-      <svg class="lt" style="--i:1" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path d="M202.93 4.95L202.93 30.45C202.93 30.52 202.99 30.41 203.05 30.30C203.10 30.21 203.14 30.13 203.15 30.16C203.22 30.18 203.76 30.45 203.88 30.45L228.20 30.45C228.28 30.45 228.78 30.75 228.81 30.76C228.82 30.81 228.87 30.70 228.92 30.59C228.97 30.48 229.01 30.37 229.01 30.45L229.01 45.41C229.02 45.65 229.02 45.90 229.03 46.15C229.04 47.01 229.06 47.90 228.98 48.66C228.93 48.68 228.37 48.99 228.27 48.99L203.17 48.99C203.15 49.05 202.97 49.72 202.97 49.83L202.97 83.22C203.02 89.52 209.52 97.95 216.10 98.16L228.31 98.16C228.39 98.16 228.88 98.45 228.90 98.45L228.90 116.75C228.83 116.76 228.52 116.76 228.30 116.75C228.22 116.75 228.16 116.75 228.12 116.75L212.55 116.75C210.70 116.75 208.61 115.76 206.85 115.25C195.70 111.99 187.32 103.01 184.27 91.89C183.74 89.97 183.05 87.73 183.02 85.72L183.02 16.45L202.93 4.95Z"/></svg>
-      <svg class="lt" style="--i:2" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path d="M238.15 116.75C238.11 116.62 237.87 116.93 237.87 116.75L237.87 71.24C237.81 48.15 256.87 30.56 279.52 30.50C281.91 30.49 284.54 30.29 286.80 30.72C286.82 30.81 287.01 30.32 287.01 30.45L287.01 44.60C287.02 46.15 286.94 47.75 286.49 49.14C283.88 49.74 280.90 49.29 278.15 49.41C271.07 49.69 264.06 53.25 260.37 59.44C258.89 61.92 257.29 65.39 257.26 68.33L257.26 116.75C257.26 116.91 257.00 116.65 256.98 116.75L238.15 116.75Z"/></svg>
-      <svg class="lt" style="--i:3" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path d="M374.54 81.01C374.47 81.02 374.05 81.09 373.93 81.09L311.78 81.09C311.65 81.09 311.14 80.97 311.06 80.95C311.04 80.84 310.97 80.36 310.97 80.21L310.97 64.55C310.97 64.40 311.13 63.92 311.15 63.81C311.25 63.79 311.74 63.53 311.89 63.53L352.43 63.53C352.58 63.53 353.08 63.28 353.17 63.26C352.48 58.29 347.16 53.62 342.94 51.25C319.86 38.26 293.98 63.81 307.96 86.78C311.19 92.07 315.96 95.83 321.83 97.78C328.61 100.02 336.04 99.34 342.11 95.48C343.70 94.47 345.16 93.07 346.57 91.99L362.64 101.16C362.88 101.29 363.27 101.69 363.43 101.83C361.17 105.54 357.14 108.70 353.42 111.08C336.34 122.03 313.39 119.80 298.49 106.10C269.75 79.67 287.57 32.54 325.67 29.18C333.11 28.52 340.61 29.58 347.50 32.55C356.30 36.35 363.79 42.44 368.83 50.67C373.83 58.84 377.80 71.66 374.54 81.01Z"/></svg>
-      <svg class="lt" style="--i:4" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path d="M381.02 116.37C381.01 116.33 380.92 116.84 380.92 116.75L380.92 62.58C380.93 58.52 382.00 54.38 383.50 50.64C394.27 23.84 431.11 22.66 446.61 45.61C449.34 49.66 452.04 55.35 452.08 60.36L452.08 115.37C452.08 115.63 451.88 116.16 451.83 116.36C451.78 116.37 451.31 116.75 451.22 116.75L439.13 116.75C437.03 116.78 434.72 116.76 432.75 116.41C432.74 116.35 432.53 116.86 432.53 116.75L432.53 64.41C432.51 61.83 431.16 58.96 429.81 56.82C422.96 45.94 405.26 46.50 401.28 59.56C400.98 60.55 400.36 61.72 400.34 62.76L400.34 116.75C400.34 116.88 400.04 116.30 400.02 116.38C399.92 116.40 399.43 116.75 399.28 116.75L381.77 116.75C381.62 116.75 381.12 116.39 381.02 116.37Z"/></svg>
-      <svg class="lt" style="--i:5" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path d="M484.12 116.32C484.12 116.27 483.89 116.85 483.89 116.75L483.89 64.62C483.88 62.11 482.57 59.42 481.27 57.32C475.31 47.66 464.76 47.38 456.00 52.98C455.07 51.53 454.58 49.65 453.83 47.98C451.72 43.29 448.44 40.00 445.19 36.30C447.62 33.73 451.80 32.07 455.23 31.00C473.78 25.24 494.98 33.62 501.45 52.77C502.33 55.37 503.41 58.45 503.46 61.22L503.46 116.75C503.45 116.90 503.38 116.26 503.36 116.36C503.27 116.38 502.75 116.75 502.61 116.75L485.13 116.75C484.86 116.75 484.32 116.37 484.12 116.32Z"/></svg>
-      <svg class="lt" style="--i:6" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path d="M602.42 116.54C602.35 116.55 601.81 116.75 601.69 116.75L583.61 116.75C583.23 116.75 582.57 116.83 582.27 116.75L582.27 75.73C582.15 45.06 545.58 37.67 532.57 60.05C529.59 65.18 528.52 70.55 529.14 76.42C529.97 84.25 534.89 91.54 541.56 95.62C551.68 101.80 564.70 99.40 572.88 91.17C574.89 89.14 576.03 86.40 577.82 84.39C577.90 84.63 578.04 84.86 578.04 85.11L578.04 110.91C578.04 111.08 578.01 111.39 578.00 111.52C574.93 114.09 570.81 115.79 566.93 116.90C552.98 120.92 537.50 118.42 526.08 109.24C517.72 102.53 511.89 92.87 509.91 82.34C501.53 37.72 555.49 10.04 588.11 40.72C595.05 47.25 602.35 60.06 602.47 69.79L602.47 116.75C602.47 116.88 602.43 116.46 602.42 116.54Z"/></svg>
-    </div>
+    <div class="logo" role="img" aria-label="Ustrema"><div class="logo-3d">
+      <svg class="hook" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path pathLength="1" d="M0.20 25.45L28.10 41.56L28.10 70.01C28.10 86.95 43.56 100.67 62.62 100.67C72.09 100.67 80.67 97.29 86.90 91.81C76.48 107.48 60.54 117.50 42.68 117.50C19.22 117.50 0.20 98.20 0.20 74.39L0.20 25.45Z"/></svg>
+      <svg class="blade" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path pathLength="1" d="M60.30 19.71L94.10 0.20L94.10 63.76C94.10 78.31 78.97 90.10 60.30 90.10L60.30 19.71Z"/></svg>
+      <svg class="lt" style="--i:0" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path pathLength="1" d="M107.96 116.42C107.96 116.37 107.86 116.85 107.86 116.75L107.86 99.25C107.86 99.05 107.98 98.54 108.01 98.39C108.06 98.38 108.53 98.14 108.63 98.14L144.40 98.14C152.26 98.08 153.63 85.82 146.51 84.24L134.38 81.55C129.66 80.50 124.80 79.79 120.52 77.39C102.27 67.16 105.64 39.92 124.59 32.62C127.10 31.65 130.01 30.50 132.73 30.45L170.17 30.45C170.29 30.45 170.71 30.67 170.78 30.68C170.82 30.81 171.13 30.28 171.13 30.45L171.13 42.73C171.16 44.69 171.31 46.83 170.98 48.67C170.89 48.69 170.39 48.99 170.25 48.99L135.21 48.99C126.91 49.07 125.55 60.59 133.81 62.24L151.72 65.84C154.67 66.43 157.56 68.26 160.02 69.89C176.85 81.05 174.38 106.98 155.54 114.49C153.35 115.36 150.56 116.71 148.17 116.75L108.71 116.75C108.56 116.75 108.06 116.44 107.96 116.42Z"/></svg>
+      <svg class="lt" style="--i:1" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path pathLength="1" d="M202.93 4.95L202.93 30.45C202.93 30.52 202.99 30.41 203.05 30.30C203.10 30.21 203.14 30.13 203.15 30.16C203.22 30.18 203.76 30.45 203.88 30.45L228.20 30.45C228.28 30.45 228.78 30.75 228.81 30.76C228.82 30.81 228.87 30.70 228.92 30.59C228.97 30.48 229.01 30.37 229.01 30.45L229.01 45.41C229.02 45.65 229.02 45.90 229.03 46.15C229.04 47.01 229.06 47.90 228.98 48.66C228.93 48.68 228.37 48.99 228.27 48.99L203.17 48.99C203.15 49.05 202.97 49.72 202.97 49.83L202.97 83.22C203.02 89.52 209.52 97.95 216.10 98.16L228.31 98.16C228.39 98.16 228.88 98.45 228.90 98.45L228.90 116.75C228.83 116.76 228.52 116.76 228.30 116.75C228.22 116.75 228.16 116.75 228.12 116.75L212.55 116.75C210.70 116.75 208.61 115.76 206.85 115.25C195.70 111.99 187.32 103.01 184.27 91.89C183.74 89.97 183.05 87.73 183.02 85.72L183.02 16.45L202.93 4.95Z"/></svg>
+      <svg class="lt" style="--i:2" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path pathLength="1" d="M238.15 116.75C238.11 116.62 237.87 116.93 237.87 116.75L237.87 71.24C237.81 48.15 256.87 30.56 279.52 30.50C281.91 30.49 284.54 30.29 286.80 30.72C286.82 30.81 287.01 30.32 287.01 30.45L287.01 44.60C287.02 46.15 286.94 47.75 286.49 49.14C283.88 49.74 280.90 49.29 278.15 49.41C271.07 49.69 264.06 53.25 260.37 59.44C258.89 61.92 257.29 65.39 257.26 68.33L257.26 116.75C257.26 116.91 257.00 116.65 256.98 116.75L238.15 116.75Z"/></svg>
+      <svg class="lt" style="--i:3" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path pathLength="1" d="M374.54 81.01C374.47 81.02 374.05 81.09 373.93 81.09L311.78 81.09C311.65 81.09 311.14 80.97 311.06 80.95C311.04 80.84 310.97 80.36 310.97 80.21L310.97 64.55C310.97 64.40 311.13 63.92 311.15 63.81C311.25 63.79 311.74 63.53 311.89 63.53L352.43 63.53C352.58 63.53 353.08 63.28 353.17 63.26C352.48 58.29 347.16 53.62 342.94 51.25C319.86 38.26 293.98 63.81 307.96 86.78C311.19 92.07 315.96 95.83 321.83 97.78C328.61 100.02 336.04 99.34 342.11 95.48C343.70 94.47 345.16 93.07 346.57 91.99L362.64 101.16C362.88 101.29 363.27 101.69 363.43 101.83C361.17 105.54 357.14 108.70 353.42 111.08C336.34 122.03 313.39 119.80 298.49 106.10C269.75 79.67 287.57 32.54 325.67 29.18C333.11 28.52 340.61 29.58 347.50 32.55C356.30 36.35 363.79 42.44 368.83 50.67C373.83 58.84 377.80 71.66 374.54 81.01Z"/></svg>
+      <svg class="lt" style="--i:4" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path pathLength="1" d="M381.02 116.37C381.01 116.33 380.92 116.84 380.92 116.75L380.92 62.58C380.93 58.52 382.00 54.38 383.50 50.64C394.27 23.84 431.11 22.66 446.61 45.61C449.34 49.66 452.04 55.35 452.08 60.36L452.08 115.37C452.08 115.63 451.88 116.16 451.83 116.36C451.78 116.37 451.31 116.75 451.22 116.75L439.13 116.75C437.03 116.78 434.72 116.76 432.75 116.41C432.74 116.35 432.53 116.86 432.53 116.75L432.53 64.41C432.51 61.83 431.16 58.96 429.81 56.82C422.96 45.94 405.26 46.50 401.28 59.56C400.98 60.55 400.36 61.72 400.34 62.76L400.34 116.75C400.34 116.88 400.04 116.30 400.02 116.38C399.92 116.40 399.43 116.75 399.28 116.75L381.77 116.75C381.62 116.75 381.12 116.39 381.02 116.37Z"/></svg>
+      <svg class="lt" style="--i:5" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path pathLength="1" d="M484.12 116.32C484.12 116.27 483.89 116.85 483.89 116.75L483.89 64.62C483.88 62.11 482.57 59.42 481.27 57.32C475.31 47.66 464.76 47.38 456.00 52.98C455.07 51.53 454.58 49.65 453.83 47.98C451.72 43.29 448.44 40.00 445.19 36.30C447.62 33.73 451.80 32.07 455.23 31.00C473.78 25.24 494.98 33.62 501.45 52.77C502.33 55.37 503.41 58.45 503.46 61.22L503.46 116.75C503.45 116.90 503.38 116.26 503.36 116.36C503.27 116.38 502.75 116.75 502.61 116.75L485.13 116.75C484.86 116.75 484.32 116.37 484.12 116.32Z"/></svg>
+      <svg class="lt" style="--i:6" viewBox="0 0 602.67 117.70" aria-hidden="true" focusable="false"><path pathLength="1" d="M602.42 116.54C602.35 116.55 601.81 116.75 601.69 116.75L583.61 116.75C583.23 116.75 582.57 116.83 582.27 116.75L582.27 75.73C582.15 45.06 545.58 37.67 532.57 60.05C529.59 65.18 528.52 70.55 529.14 76.42C529.97 84.25 534.89 91.54 541.56 95.62C551.68 101.80 564.70 99.40 572.88 91.17C574.89 89.14 576.03 86.40 577.82 84.39C577.90 84.63 578.04 84.86 578.04 85.11L578.04 110.91C578.04 111.08 578.01 111.39 578.00 111.52C574.93 114.09 570.81 115.79 566.93 116.90C552.98 120.92 537.50 118.42 526.08 109.24C517.72 102.53 511.89 92.87 509.91 82.34C501.53 37.72 555.49 10.04 588.11 40.72C595.05 47.25 602.35 60.06 602.47 69.79L602.47 116.75C602.47 116.88 602.43 116.46 602.42 116.54Z"/></svg>
+    </div></div>
 
     <h1><span class="wi" style="--i:0">Momentum</span> <span class="wi" style="--i:1">with</span> <span class="wi" style="--i:2">direction.</span></h1>
     <p class="sub in d1">Senior Microsoft Power Platform, Copilot and Dynamics 365 practice. Governance first, then delivery that scales.</p>
@@ -235,20 +249,6 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
   ['pointerleave', 'focusout'].forEach(e => sec.addEventListener(e, () => paused = false));
   if (!reduce) setInterval(() => { if (!manual && !paused && !document.hidden) show((cur + 1) % 3); }, 5200);
 
-  /* ---------- Logo: hover replays the blade ---------- */
-  const logo = document.querySelector('.logo'), blade = logo.querySelector('.blade');
-  let surging = false;
-  const surge = () => {
-    if (reduce || surging) return; surging = true;
-    blade.animate([
-      { transform: 'none', easing: EASE_IN },
-      { transform: 'translateY(101%)', offset: .26, easing: EASE },
-      { transform: 'none' }
-    ], { duration: 1500 }).finished.then(() => surging = false);
-  };
-  logo.addEventListener('pointerenter', surge);
-  logo.addEventListener('click', surge);
-
   /* ---------- Magnetic CTA ---------- */
   if (fine && !reduce){
     const mag = document.getElementById('mag');
@@ -259,11 +259,11 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
     mag.addEventListener('pointerleave', () => { mag.style.transform = ''; });
   }
 
-  /* ---------- The field: the u, built from hundreds of 30° blades ----------
-     Each cell is a small blade (square face with the logo's 30° cut) pushed out of
-     the page in oblique projection. Inside the u they stand proud and ride two
-     travelling waves along the 30° axis; outside it they rest as a dot grid.
-     The pointer lifts the field around it; a click or tap sends a ripple. */
+  /* ---------- Background field ----------
+     One canvas, several calm modes built from the logo's own geometry (the u and its 30° cut).
+     Starts when the page is idle, drops to 30 fps on slow devices, and shows a still frame
+     under prefers-reduced-motion. */
+  const MODE = {"name": "dots"};
   const cv = document.getElementById('field');
   const ctx = cv.getContext('2d', { alpha: false });
   const HOOK = new Path2D('M0.20 25.45L28.10 41.56L28.10 70.01C28.10 86.95 43.56 100.67 62.62 100.67C72.09 100.67 80.67 97.29 86.90 91.81C76.48 107.48 60.54 117.50 42.68 117.50C19.22 117.50 0.20 98.20 0.20 74.39L0.20 25.45Z');
@@ -271,152 +271,172 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
   const VB = { x: .2, y: .2, w: 93.9, h: 117.3 };
   const C30 = Math.cos(Math.PI / 6), S30 = Math.sin(Math.PI / 6), T30 = Math.tan(Math.PI / 6);
   const INK = [29, 20, 41];
-  const TONES = [
-    [[38, 30, 49], [92, 84, 99]],     // field lifted by the pointer
-    [[44, 35, 56], [118, 110, 124]],  // the u hook: ink tints
-    [[54, 27, 60], [124, 44, 116]]    // the u blade: magenta tints, never full magenta
-  ];
-  const DL = 36, DTOP = 1.25;         // depth levels, max depth
-
-  let W, H, DPR, P, S, CUT, DMAX, cells = [], sprites = [], grid = null, t0 = 0;
-  const ptr = { x: -1e4, y: -1e4, tx: -1e4, ty: -1e4, on: 0, k: 0 };
-  const ripples = [];
   const probe = document.createElement('canvas').getContext('2d');
   const mix = (a, b, k) => a.map((v, i) => Math.round(v + (b[i] - v) * k));
   const rgb = c => `rgb(${c[0]},${c[1]},${c[2]})`;
+  const layer = () => { const c = document.createElement('canvas'); c.width = cv.width; c.height = cv.height; const g = c.getContext('2d'); g.scale(DPR, DPR); return [c, g]; };
+  let W, H, DPR, mob, U;
 
-  // A blade's look depends only on (material, depth), so every state is drawn once into a single
-  // atlas (one GPU texture) and each frame just stamps cut-outs in painter's order.
-  let atlas, cellW, cellH;
-  function buildAtlas(){
-    const zMax = DTOP * DMAX;
-    cellW = Math.ceil(S + zMax * C30 + 3); cellH = Math.ceil(S + zMax * S30 + 3);
-    atlas = document.createElement('canvas');
-    atlas.width = Math.ceil(cellW * DL * DPR); atlas.height = Math.ceil(cellH * TONES.length * DPR);
-    const g = atlas.getContext('2d');
-    g.scale(DPR, DPR);
-    const poly = (pts, col) => { g.fillStyle = col; g.beginPath(); pts.forEach(([x, y], j) => j ? g.lineTo(x, y) : g.moveTo(x, y)); g.fill(); };
-    sprites = TONES.map(([lo, hi], m) => Array.from({ length: DL }, (_, i) => {
-      const d = (i + 1) / DL * DTOP, z = d * DMAX, ox = z * C30, oy = z * S30;
-      const f = mix(lo, hi, Math.min(1, d / 1.05));
-      const bx = i * cellW, by = m * cellH;
-      g.save(); g.translate(bx + 1, by + oy + 1);
-      poly([[0, S], [S, S], [S + ox, S - oy], [ox, S - oy]], rgb(mix(INK, f, .38)));          // bottom face
-      poly([[0, CUT], [0, S], [ox, S - oy], [ox, CUT - oy]], rgb(mix(INK, f, .66)));           // left face
-      poly([[ox, CUT - oy], [S + ox, -oy], [S + ox, S - oy], [ox, S - oy]], rgb(f));           // front, 30° cut
-      g.restore();
-      const w = S + ox + 2, hh = S + oy + 2;
-      return { sx: bx * DPR, sy: by * DPR, sw: w * DPR, sh: hh * DPR, w, h: hh, dy: -oy - 1 };
-    }));
-  }
-
-  function layout(){
-    const mob = innerWidth < 768;
-    DPR = Math.min(devicePixelRatio || 1, mob ? 1.5 : 2);
-    W = innerWidth; H = innerHeight;
-    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  // Where the big u sits: right side on desktop, bottom-right and quieter on phones
+  function placeU(){
     const uh = mob ? Math.min(H * .6, W * 1.1) : Math.min(H * .94, W * .42 * VB.h / VB.w);
     const uw = uh * VB.w / VB.h;
-    const ux = mob ? W - uw * .7 : W - uw - W * .045;
-    const uy = mob ? H - uh * .8 : H - uh * .9;
-    P = Math.max(12, uw / (mob ? 15 : 23));
-    S = P * .64; CUT = S * T30; DMAX = P * 1.55;
-    const c0 = Math.floor(-ux / P) - 1, c1 = Math.ceil((W - ux) / P) + 1;
-    const r0 = Math.floor(-uy / P) - 1, r1 = Math.ceil((H - uy) / P) + 2;
-    cells = [];
-    for (let r = r0; r <= r1; r++){
-      for (let c = c1; c >= c0; c--){             // rows top→bottom, columns right→left = correct overlap
-        const lx = (c + .5) * P, ly = (r + .5) * P;
-        const vx = VB.x + lx / uw * VB.w, vy = VB.y + ly / uh * VB.h;
-        let m = 0;
-        if (vx > 0 && vx < 95 && vy > 0 && vy < 118){
-          if (probe.isPointInPath(BLADE, vx, vy)) m = 2; else if (probe.isPointInPath(HOOK, vx, vy)) m = 1;
+    U = { w: uw, h: uh, x: mob ? W - uw * .7 : W - uw - W * .045, y: mob ? H - uh * .8 : H - uh * .9 };
+  }
+  function inU(x, y){
+    const vx = VB.x + (x - U.x) / U.w * VB.w, vy = VB.y + (y - U.y) / U.h * VB.h;
+    if (vx < 0 || vx > 95 || vy < 0 || vy > 118) return 0;
+    return probe.isPointInPath(BLADE, vx, vy) ? 2 : probe.isPointInPath(HOOK, vx, vy) ? 1 : 0;
+  }
+  function uClip(g, path){
+    g.save(); g.translate(U.x, U.y); g.scale(U.w / VB.w, U.h / VB.h); g.translate(-VB.x, -VB.y); g.clip(path); g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+
+  const modes = {
+
+
+
+
+    /* Signal: a dot grid across the whole page; the big u is drawn in larger dots that breathe in a
+       slow, smooth wave along the 30° axis. Where the cursor passes, nearby dots wake slowly and join
+       their grid neighbours with hairlines, forming faint squares that fade out behind it. */
+    dots: (() => {
+      const B = 14, ATTACK = .35, RELEASE = 1.2;
+      let p, cols, rows, gu, base, upts, E, stamp, act, inAct, L1, L2, frame = 0, lastT = 0;
+      const ptr = { x: -1e4, y: -1e4, moved: -1e9, in: 0 };
+      const LINE = [0, 1].map(m => Array.from({ length: B }, (_, i) => m ? `rgba(232,71,201,${((i + 1) / B * .1).toFixed(3)})` : `rgba(244,241,236,${((i + 1) / B * .08).toFixed(3)})`));
+      const DOT = [0, 1].map(m => Array.from({ length: B }, (_, i) => m ? `rgba(232,71,201,${((i + 1) / B * .8).toFixed(3)})` : `rgba(244,241,236,${((i + 1) / B * .8).toFixed(3)})`));
+      const lb = [[], []].map(() => Array.from({ length: B }, () => []));
+      const db = [[], []].map(() => Array.from({ length: B }, () => []));
+      if (!reduce){
+        addEventListener('pointermove', e => {
+          if (e.pointerType !== 'mouse') return;
+          ptr.x = e.clientX; ptr.y = e.clientY; ptr.moved = performance.now(); ptr.in = 1;
+        }, { passive: true });
+        document.documentElement.addEventListener('pointerleave', () => ptr.in = 0);
+      }
+      const dot = (m, al, x, y, r) => { if (al > .012) db[m][Math.min(B - 1, Math.floor(al / .8 * B))].push(x, y, r); };
+      return {
+        init(){
+          p = mob ? 13 : 16; cols = Math.ceil(W / p); rows = Math.ceil(H / p);
+          const n = cols * rows;
+          gu = new Uint8Array(n); E = new Float32Array(n); stamp = new Uint32Array(n); inAct = new Uint8Array(n); act = [];
+          L1 = new Int32Array(n).fill(-1); L2 = new Int32Array(n).fill(-1);
+          upts = [];
+          let g; [base, g] = layer();
+          g.fillStyle = rgb(INK); g.fillRect(0, 0, W, H);
+          g.fillStyle = 'rgba(244,241,236,.07)'; g.beginPath();
+          for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++){
+            const i = r * cols + c, x = p / 2 + c * p, y = p / 2 + r * p, m = inU(x, y);
+            gu[i] = m;
+            if (m) upts.push({ i, x, y, m, a: (x * C30 - y * S30) / p, d: 0 });
+            else g.rect(x - .75, y - .75, 1.5, 1.5);
+            if (c + 1 < cols) L1[i] = i + 1;          // right neighbour
+            if (r + 1 < rows) L2[i] = i + cols;       // neighbour below: together they draw squares
+          }
+          g.fill();
+          let lo = Infinity, hi = -Infinity;
+          for (const q of upts){ lo = Math.min(lo, q.a); hi = Math.max(hi, q.a); }
+          for (const q of upts) q.d = (q.a - lo) / (hi - lo || 1);
+          lastT = 0;
+        },
+        draw(t, now){
+          const dt = Math.min(.05, Math.max(0, t - lastT)); lastT = t; frame++;
+          const up = 1 - Math.exp(-dt / ATTACK), down = 1 - Math.exp(-dt / RELEASE);
+          const R = mob ? 110 : 150, wt = t * .45;
+          for (const b of lb) for (const l of b) l.length = 0;
+          for (const b of db) for (const l of b) l.length = 0;
+          // energy: rises slowly near the exact cursor position, releases even more slowly
+          if (ptr.in && now - ptr.moved < 1600){
+            const c0 = Math.max(0, Math.floor((ptr.x - R) / p)), c1 = Math.min(cols - 1, Math.ceil((ptr.x + R) / p));
+            const r0 = Math.max(0, Math.floor((ptr.y - R) / p)), r1 = Math.min(rows - 1, Math.ceil((ptr.y + R) / p));
+            for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++){
+              const i = r * cols + c, dx = p / 2 + c * p - ptr.x, dy = p / 2 + r * p - ptr.y, d = Math.sqrt(dx * dx + dy * dy);
+              if (d >= R) continue;
+              const f = 1 - d / R, target = f * f * (3 - 2 * f);
+              E[i] += (target - E[i]) * (target > E[i] ? up : down);
+              stamp[i] = frame;
+              if (!inAct[i] && E[i] > .003){ inAct[i] = 1; act.push(i); }
+            }
+          }
+          for (let k = act.length - 1; k >= 0; k--){
+            const i = act[k];
+            if (stamp[i] !== frame) E[i] -= E[i] * down;
+            if (E[i] < .003){ E[i] = 0; inAct[i] = 0; act[k] = act[act.length - 1]; act.pop(); }
+          }
+          ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(base, 0, 0); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+          // the web
+          for (const i of act){
+            const e = E[i], c = i % cols, r = (i / cols) | 0;
+            for (const j of [L1[i], L2[i]]){
+              if (j < 0 || !E[j]) continue;
+              const al = Math.sqrt(e * E[j]) * .08; if (al < .004) continue;
+              const m = gu[i] === 2 && gu[j] === 2 ? 1 : 0;
+              lb[m][Math.min(B - 1, Math.floor(al / .08 * B))].push(i, j);
+            }
+            if (!gu[i]) dot(0, .07 + .1 * e, p / 2 + c * p, p / 2 + r * p, .8 + .25 * e);
+          }
+          // the u: continuous size and brightness, eased; the web adds a touch where it overlaps
+          for (const q of upts){
+            const on = Math.min(1, Math.max(0, (t - .3 - q.d * 1.2) / 1.6)); if (on <= 0) continue;
+            const oe = on * on * on * (on * (on * 6 - 15) + 10);                 // smootherstep
+            const w = Math.sin(q.a * .15 - wt) * .5 + .5, e = w * w * (3 - 2 * w);
+            dot(q.m - 1, (.17 + .38 * e + .15 * E[q.i]) * oe, q.x, q.y, (.9 + 1.1 * e + .4 * E[q.i]) * (.5 + .5 * oe));
+          }
+          ctx.lineWidth = .7;
+          for (let m = 0; m < 2; m++) for (let bi = 0; bi < B; bi++){
+            const l = lb[m][bi]; if (!l.length) continue;
+            ctx.strokeStyle = LINE[m][bi]; ctx.beginPath();
+            for (let k = 0; k < l.length; k += 2){
+              const a = l[k], b = l[k + 1];
+              ctx.moveTo(p / 2 + (a % cols) * p, p / 2 + ((a / cols) | 0) * p); ctx.lineTo(p / 2 + (b % cols) * p, p / 2 + ((b / cols) | 0) * p);
+            }
+            ctx.stroke();
+          }
+          for (let m = 0; m < 2; m++) for (let bi = 0; bi < B; bi++){
+            const l = db[m][bi]; if (!l.length) continue;
+            ctx.fillStyle = DOT[m][bi]; ctx.beginPath();
+            for (let k = 0; k < l.length; k += 3){ ctx.moveTo(l[k] + l[k + 2], l[k + 1]); ctx.arc(l[k], l[k + 1], l[k + 2], 0, 6.2832); }
+            ctx.fill();
+          }
         }
-        const x = ux + c * P + (P - S) / 2, y = uy + r * P + (P - S) / 2;
-        const cx = x + S / 2, cy = y + S / 2;
-        const along = (x * C30 - y * S30) / P;      // position along the 30° axis
-        cells.push({ x, y, cx, cy, m, a1: along * .3, a2: (cx * .19 + cy * .27) / P + Math.random() * 2.2, along, d: 0 });
-      }
-    }
-    let lo = Infinity, hi = -Infinity;
-    for (const k of cells) if (k.m){ lo = Math.min(lo, k.along); hi = Math.max(hi, k.along); }
-    for (const k of cells) k.delay = k.m ? .05 + (k.along - lo) / (hi - lo || 1) * .75 : .8;
-    // the resting dot grid + background, drawn once
-    grid = document.createElement('canvas'); grid.width = cv.width; grid.height = cv.height;
-    const g = grid.getContext('2d'); g.scale(DPR, DPR);
-    g.fillStyle = rgb(INK); g.fillRect(0, 0, W, H);
-    g.fillStyle = 'rgba(244,241,236,.09)'; g.beginPath();
-    for (const k of cells) if (!k.m) g.rect(k.cx - .8, k.cy - .8, 1.6, 1.6);
-    g.fill();
-    buildAtlas();
-  }
+      };
+    })()
 
-  function frame(now){
-    const t = (now - t0) / 1000;
-    ptr.x += (ptr.tx - ptr.x) * .14; ptr.y += (ptr.ty - ptr.y) * .14;
-    ptr.k += ((ptr.on ? 1 : 0) - ptr.k) * .06;
-    const sig2 = 2 * (P * 3.3) ** 2, rw2 = 2 * (P * 1.3) ** 2, pk = ptr.k > .01;
-    for (let i = ripples.length - 1; i >= 0; i--) if (t - ripples[i].t > 2.6) ripples.splice(i, 1);
-    const fieldOn = Math.min(1, Math.max(0, (t - .5) * 2)), wt1 = t * 1.15, wt2 = t * .72;
+  };
+  const field = modes[MODE.name];
 
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.drawImage(grid, 0, 0);
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    for (const k of cells){
-      let lift = 0;
-      if (pk){ const dx = k.cx - ptr.x, dy = k.cy - ptr.y, q = dx * dx + dy * dy; if (q < sig2 * 4) lift = Math.exp(-q / sig2) * .95 * ptr.k; }
-      for (const rp of ripples){
-        const dx = k.cx - rp.x, dy = k.cy - rp.y, age = t - rp.t, off = Math.sqrt(dx * dx + dy * dy) - age * 820;
-        if (off * off < rw2 * 9) lift += Math.exp(-(off * off) / rw2) * Math.exp(-age * 1.5) * .85;
-      }
-      let d;
-      if (k.m){
-        const p = Math.min(1, Math.max(0, (t - k.delay) / .85)), e = 1 - (1 - p) ** 4;
-        d = (.3 + (Math.sin(k.a1 - wt1) * .5 + .5) * .3 + Math.sin(k.a2 - wt2) * .08 + (k.m === 2 ? .14 : 0) + lift * .7) * e;
-      } else d = lift * fieldOn;
-      if (d < .05) continue;
-      const sp = sprites[k.m][Math.min(DL - 1, Math.max(0, Math.round(d / DTOP * DL) - 1))];
-      ctx.drawImage(atlas, sp.sx, sp.sy, sp.sw, sp.sh, k.x - 1, k.y + sp.dy, sp.w, sp.h);
-    }
-  }
-
-  let raf = 0, rT, running = false;
-  // Adaptive: if frames run slow (low-end phone), drop to every other frame (30 fps).
-  let slow = 0, skip = false, avg = 8;
+  let raf = 0, rT, running = false, t0 = 0, slow = 0, skip = false, avg = 8;
   const loop = now => {
     raf = requestAnimationFrame(loop);
-    if (slow && (skip = !skip)) return;
-    const s = performance.now(); frame(now);
+    if (slow && (skip = !skip)) return;                      // adaptive: 30 fps when frames run slow
+    const s = performance.now(); field.draw((now - t0) / 1000, now);
     avg = avg * .9 + (performance.now() - s) * .1;
     if (avg > 10) slow = 1; else if (avg < 4) slow = 0;
   };
-  function start(){
-    layout();
-    t0 = performance.now() - (document.documentElement.classList.contains('seen') || reduce ? 4000 : 0);
-    frame(performance.now());
-    cv.classList.add('on');
-    if (reduce) return;
-    running = true;
-    raf = requestAnimationFrame(loop);
+  function layout(){
+    mob = innerWidth < 768; DPR = Math.min(devicePixelRatio || 1, mob ? 1.5 : 2);
+    W = innerWidth; H = innerHeight; cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    placeU(); field.init();
   }
-  addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (!t0) return; layout(); frame(performance.now()); }, 150); });
+  function start(){
+    if (!innerWidth || !innerHeight){ addEventListener('resize', start, { once: true }); return; }   // hidden tab: wait for a real size
+    layout();                                                  // task 1: build the grid
+    requestAnimationFrame(() => {                              // task 2: first frame, then the loop
+      t0 = performance.now() - (reduce ? 4000 : 0);
+      field.draw((performance.now() - t0) / 1000, performance.now());
+      cv.classList.add('on');
+      if (reduce) return;
+      running = true; raf = requestAnimationFrame(loop);
+    });
+  }
+  addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (!t0) return; layout(); field.draw((performance.now() - t0) / 1000, performance.now()); }, 150); });
   document.addEventListener('visibilitychange', () => {
     if (!running) return;
     cancelAnimationFrame(raf);
     if (!document.hidden) raf = requestAnimationFrame(loop);
   });
-  if (!reduce){
-    addEventListener('pointermove', e => {
-      ptr.tx = e.clientX; ptr.ty = e.clientY;
-      if (!ptr.on){ ptr.x = ptr.tx; ptr.y = ptr.ty; ptr.on = 1; }
-    }, { passive: true });
-    document.documentElement.addEventListener('pointerleave', () => ptr.on = 0);
-    addEventListener('pointerdown', e => {
-      ripples.push({ x: e.clientX, y: e.clientY, t: (performance.now() - t0) / 1000 });
-      if (ripples.length > 4) ripples.shift();
-    }, { passive: true });
-  }
-  // Start the field once the page has loaded and the main thread is idle: it never competes with first paint.
+  // Start once the page has loaded and the main thread is idle: it never competes with first paint.
   const idle = window.requestIdleCallback || (f => setTimeout(f, 200));
   const boot = () => idle(start, { timeout: 1000 });
   if (document.readyState === 'complete') boot(); else addEventListener('load', boot, { once: true });

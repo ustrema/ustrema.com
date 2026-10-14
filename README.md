@@ -3,7 +3,8 @@
 The holding page for [ustrema.com](https://ustrema.com). It is a static site on GitHub Pages: plain HTML, CSS and a small inline script. It has no framework and no third-party requests.
 
 - English at `/`, Bulgarian at `/bg/`, linked with `hreflang`.
-- Background: the Ustrema u, built from hundreds of 30° blades in oblique projection. A slow wave runs through it along the brand's 30° axis. The pointer lifts the field and a click or tap sends a ripple. It renders on a canvas from pre-rendered blade images, starts only once the page is idle, and freezes into a still frame under `prefers-reduced-motion`.
+- Logo intro: each part of the wordmark is drawn as an outline (blade, hook, then the letters left to right), then fills in as the outline fades.
+- Background: a faint dot grid across the page. The big u is drawn in larger dots (magenta in the blade) that breathe in a slow wave along the brand's 30° axis. Where the mouse passes, nearby dots wake and join their neighbours with very faint hairline squares, which fade out behind the cursor. Touch screens get the ambient wave only. The canvas starts once the page is idle, drops to 30 fps on slow devices, and shows a still frame under `prefers-reduced-motion`.
 - Lighthouse, mobile and desktop, EN and BG: Performance 100, Accessibility 100, Best Practices 100, SEO 100 (checked 14 Oct 2026 on a gzip-serving local server).
 - Search and answer engines: canonical and `hreflang`, Open Graph and Twitter cards, Organization / WebSite / WebPage JSON-LD, `sitemap.xml`, `robots.txt` (AI crawlers allowed) and [`llms.txt`](llms.txt).
 
@@ -24,7 +25,7 @@ House rules: no em or en dashes in copy (the build fails on them), Microsoft pro
 | --- | --- |
 | `src/template.html` | Page template: markup, CSS, script |
 | `src/logo.svgfrag` | The approved wordmark, split into one path per letter for the intro |
-| `build.py` | Renders both languages and writes `sitemap.xml`, `robots.txt`, `llms.txt` and `manifest.webmanifest` |
+| `build.py` | Renders both languages and writes `sitemap.xml`, `robots.txt`, `llms.txt` and `manifest.webmanifest`. `PROD_VARIANT` picks the live design; `python3 build.py --preview` writes every variant to `preview/` (git-ignored) for side-by-side review |
 | `fonts/` | Manrope 600 to 800, Onest 400 and JetBrains Mono 500, subset to Latin and Cyrillic (69 KB total, OFL) |
 | `assets/` | Favicons, app icons, `og.jpg` share image |
 | `404.html` | Not-found page |
