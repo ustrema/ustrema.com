@@ -1,0 +1,30 @@
+# Ustrema
+
+> Ustrema is a Sofia-based Microsoft Power Platform, Copilot and Dynamics 365 practice. Governance first, then delivery that scales. Launching soon.
+
+Ustrema (Устрема, legal name USTREMA LTD / УСТРЕМА ООД) is a Microsoft Power Platform consultancy founded in Sofia, Bulgaria, in September 2026. It works with mid-market and enterprise organisations in Bulgaria and the European Union, in English and Bulgarian. Its tagline is "Momentum with direction." (Bulgarian: "Устрем с посока.").
+
+## What Ustrema does
+
+- **Govern**: Know what is in your tenant. Fix it without stopping your makers.
+- **Build**: Apps, automations and dashboards, built properly the first time.
+- **Scale with AI**: Copilot and agents that only see what they should.
+
+Ustrema starts with governance (environments, data loss prevention policies, ownership, Managed Environments, Center of Excellence) and then builds on Microsoft Power Apps, Power Automate, Power BI, Dataverse, Microsoft Copilot Studio and Microsoft Dynamics 365.
+
+## Status
+
+The full website is launching soon. This page is the current home of the company online.
+
+## Contact
+
+- Email: hello@ustrema.com
+- Location: Sofia, Bulgaria
+- Languages: English, Bulgarian
+
+## Pages
+
+- [English home](https://ustrema.com/)
+- [Bulgarian home](https://ustrema.com/bg/)
+
+Microsoft, Power Platform, Copilot and Dynamics 365 are trademarks of the Microsoft group of companies. Ustrema is an independent company.
