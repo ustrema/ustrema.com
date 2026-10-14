@@ -88,9 +88,17 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
    Final state lives in the base styles, so reduced motion simply shows the finished logo. */
 .logo path{fill:currentColor;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round;stroke-dasharray:1;stroke-opacity:0;
   animation:draw 2.3s cubic-bezier(.45,0,.25,1) var(--d,0s) both}
-.logo .blade{--d:.15s}
-.logo .hook{--d:.35s}
-.logo .lt{--d:calc(.6s + var(--i) * 95ms)}
+.logo .blade path{--d:.1s;animation-duration:1.5s}
+.logo .hook path{--d:.25s;animation-duration:1.5s}
+.logo .lt{--d:calc(1.7s + var(--i) * 95ms)}
+.logo .lt path{animation-duration:1.9s}
+/* The u lands first, sitting dim like an unlit sign, then flickers on while the first letters are drawn */
+.logo .hook,.logo .blade{animation:light 1.5s linear 1.8s both}
+@keyframes light{
+  0%{opacity:.42} 9%{opacity:.42} 11%{opacity:1} 15%{opacity:1} 17%{opacity:.3}
+  27%{opacity:.3} 29%{opacity:1} 33%{opacity:.55} 37%{opacity:1} 50%{opacity:1}
+  52%{opacity:.4} 60%{opacity:.4} 62%{opacity:1} 100%{opacity:1}
+}
 @keyframes draw{
   0%{stroke-dashoffset:1;stroke-opacity:1;fill-opacity:0}
   62%{stroke-dashoffset:0;stroke-opacity:1;fill-opacity:0}
@@ -98,13 +106,13 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 }
 
 h1{font-family:var(--f-display);font-weight:800;font-size:clamp(42px,6.4vw,96px);letter-spacing:-.035em;line-height:1.02;margin:0;max-width:12ch;text-wrap:balance}
-h1 .wi{display:inline-block;animation:word 1.4s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(1.05s + var(--i) * 90ms)}
+h1 .wi{display:inline-block;animation:word 1.4s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(2.1s + var(--i) * 90ms)}
 @keyframes word{from{transform:translateY(.22em);opacity:.04}to{transform:none;opacity:1}}
 .sub{font-size:clamp(17px,1.35vw,20px);line-height:1.5;color:var(--cream-72);max-width:44ch;margin:clamp(20px,3vh,28px) 0 0}
 .cta{display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px;margin-top:clamp(32px,5vh,48px)}
 .in{animation:in 1.3s cubic-bezier(.22,1,.36,1) both}
 @keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.d1{animation-delay:1.3s}.d2{animation-delay:1.45s}.d3{animation-delay:1.6s}
+.d1{animation-delay:2.45s}.d2{animation-delay:2.6s}.d3{animation-delay:2.8s}
 
 .btn-wrap{display:inline-block;transition:transform .6s var(--ease)}
 .btn{position:relative;display:inline-flex;align-items:center;gap:14px;padding:19px 30px 19px 32px;background:var(--cream);color:var(--ink);font-family:var(--f-display);font-weight:700;font-size:17px;letter-spacing:-.01em;text-decoration:none;white-space:nowrap;isolation:isolate;overflow:hidden;
@@ -323,18 +331,23 @@ h1 .wi{display:inline-block;animation:word 1.4s cubic-bezier(.22,1,.36,1) both;a
           gu = new Uint8Array(n); E = new Float32Array(n); stamp = new Uint32Array(n); inAct = new Uint8Array(n); act = [];
           L1 = new Int32Array(n).fill(-1); L2 = new Int32Array(n).fill(-1);
           upts = [];
+          // resting grid: one dot tile repeated as a pattern, a single fill instead of thousands of rects
           let g; [base, g] = layer();
           g.fillStyle = rgb(INK); g.fillRect(0, 0, W, H);
-          g.fillStyle = 'rgba(244,241,236,.07)'; g.beginPath();
-          for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++){
-            const i = r * cols + c, x = p / 2 + c * p, y = p / 2 + r * p, m = inU(x, y);
-            gu[i] = m;
-            if (m) upts.push({ i, x, y, m, a: (x * C30 - y * S30) / p, d: 0 });
-            else g.rect(x - .75, y - .75, 1.5, 1.5);
-            if (c + 1 < cols) L1[i] = i + 1;          // right neighbour
-            if (r + 1 < rows) L2[i] = i + cols;       // neighbour below: together they draw squares
+          const tile = document.createElement('canvas'); tile.width = tile.height = Math.round(p * DPR);
+          const tg = tile.getContext('2d'); tg.scale(DPR, DPR); tg.fillStyle = 'rgba(244,241,236,.07)'; tg.fillRect(p / 2 - .75, p / 2 - .75, 1.5, 1.5);
+          g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = g.createPattern(tile, 'repeat'); g.fillRect(0, 0, base.width, base.height); g.restore();
+          for (let i = 0; i < cols * rows; i++){
+            if ((i + 1) % cols) L1[i] = i + 1;        // right neighbour
+            if (i + cols < cols * rows) L2[i] = i + cols;   // neighbour below: together they draw squares
           }
-          g.fill();
+          // only cells inside the u's bounding box can belong to the u
+          const c0 = Math.max(0, Math.floor(U.x / p)), c1 = Math.min(cols - 1, Math.ceil((U.x + U.w) / p));
+          const r0 = Math.max(0, Math.floor(U.y / p)), r1 = Math.min(rows - 1, Math.ceil((U.y + U.h) / p));
+          for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++){
+            const i = r * cols + c, x = p / 2 + c * p, y = p / 2 + r * p, m = inU(x, y);
+            if (m){ gu[i] = m; upts.push({ i, x, y, m, a: (x * C30 - y * S30) / p, d: 0 }); }
+          }
           let lo = Infinity, hi = -Infinity;
           for (const q of upts){ lo = Math.min(lo, q.a); hi = Math.max(hi, q.a); }
           for (const q of upts) q.d = (q.a - lo) / (hi - lo || 1);
@@ -409,13 +422,13 @@ h1 .wi{display:inline-block;animation:word 1.4s cubic-bezier(.22,1,.36,1) both;a
   let raf = 0, rT, running = false, t0 = 0, slow = 0, skip = false, avg = 8;
   const loop = now => {
     raf = requestAnimationFrame(loop);
-    if (slow && (skip = !skip)) return;                      // adaptive: 30 fps when frames run slow
+    if ((slow || now - t0 < 4500) && (skip = !skip)) return;   // 30 fps while the logo intro runs, or when frames run slow
     const s = performance.now(); field.draw((now - t0) / 1000, now);
     avg = avg * .9 + (performance.now() - s) * .1;
     if (avg > 10) slow = 1; else if (avg < 4) slow = 0;
   };
   function layout(){
-    mob = innerWidth < 768; DPR = Math.min(devicePixelRatio || 1, mob ? 1.5 : 2);
+    mob = innerWidth < 768; DPR = mob ? 1 : Math.min(devicePixelRatio || 1, 2);   // faint background: 1x is plenty on phones
     W = innerWidth; H = innerHeight; cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
     placeU(); field.init();
   }
@@ -438,7 +451,7 @@ h1 .wi{display:inline-block;animation:word 1.4s cubic-bezier(.22,1,.36,1) both;a
   });
   // Start once the page has loaded and the main thread is idle: it never competes with first paint.
   const idle = window.requestIdleCallback || (f => setTimeout(f, 200));
-  const boot = () => idle(start, { timeout: 1000 });
+  const boot = () => setTimeout(() => idle(start, { timeout: 1200 }), 1300);   // after the u is drawn
   if (document.readyState === 'complete') boot(); else addEventListener('load', boot, { once: true });
 })();
 </script>
