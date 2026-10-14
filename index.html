@@ -60,7 +60,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .skip:focus{top:16px}
 
 /* Layers: field 0, content 2, grain 3 */
-#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;opacity:0;transition:opacity 1.2s var(--ease)}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;opacity:0;transition:opacity .6s var(--ease)}
 #field.on{opacity:1}
 .grain{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.06;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -283,7 +283,7 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
     [[44, 35, 56], [118, 110, 124]],  // the u hook: ink tints
     [[54, 27, 60], [124, 44, 116]]    // the u blade: magenta tints, never full magenta
   ];
-  const DL = 44, DTOP = 1.25;         // depth levels, max depth
+  const DL = 36, DTOP = 1.25;         // depth levels, max depth
 
   let W, H, DPR, P, S, CUT, DMAX, cells = [], sprites = [], grid = null, t0 = 0;
   const ptr = { x: -1e4, y: -1e4, tx: -1e4, ty: -1e4, on: 0, k: 0 };
@@ -292,23 +292,24 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
   const mix = (a, b, k) => a.map((v, i) => Math.round(v + (b[i] - v) * k));
   const rgb = c => `rgb(${c[0]},${c[1]},${c[2]})`;
 
-  // A blade's look depends only on (material, depth), so every state is pre-rendered once
-  // and each frame just stamps images in painter's order. Cheap enough for low-end phones.
-  function buildSprites(){
-    sprites = TONES.map(([lo, hi]) => Array.from({ length: DL }, (_, i) => {
-      const d = (i + 1) / DL * DTOP, z = d * DMAX, ox = z * C30, oy = z * S30;
-      const f = mix(lo, hi, Math.min(1, d / 1.05));
-      const w = S + ox + 2, h = S + oy + 2;
-      const c = document.createElement('canvas');
-      c.width = Math.ceil(w * DPR); c.height = Math.ceil(h * DPR);
-      const g = c.getContext('2d');
-      g.scale(DPR, DPR); g.translate(1, oy + 1);
-      const poly = (pts, col) => { g.fillStyle = col; g.beginPath(); pts.forEach(([x, y], j) => j ? g.lineTo(x, y) : g.moveTo(x, y)); g.fill(); };
-      poly([[0, S], [S, S], [S + ox, S - oy], [ox, S - oy]], rgb(mix(INK, f, .38)));                 // bottom face
-      poly([[0, CUT], [0, S], [ox, S - oy], [ox, CUT - oy]], rgb(mix(INK, f, .66)));                  // left face
-      poly([[ox, CUT - oy], [S + ox, -oy], [S + ox, S - oy], [ox, S - oy]], rgb(f));                  // front, 30° cut
-      return { c, w, h, dy: -oy - 1 };
-    }));
+  // A blade's look depends only on (material, depth), so each state is rendered once, on first use,
+  // and every frame just stamps images in painter's order. Cheap enough for low-end phones.
+  function sprite(m, i){
+    const row = sprites[m];
+    if (row[i]) return row[i];
+    const [lo, hi] = TONES[m];
+    const d = (i + 1) / DL * DTOP, z = d * DMAX, ox = z * C30, oy = z * S30;
+    const f = mix(lo, hi, Math.min(1, d / 1.05));
+    const w = S + ox + 2, h = S + oy + 2;
+    const c = document.createElement('canvas');
+    c.width = Math.ceil(w * DPR); c.height = Math.ceil(h * DPR);
+    const g = c.getContext('2d');
+    g.scale(DPR, DPR); g.translate(1, oy + 1);
+    const poly = (pts, col) => { g.fillStyle = col; g.beginPath(); pts.forEach(([x, y], j) => j ? g.lineTo(x, y) : g.moveTo(x, y)); g.fill(); };
+    poly([[0, S], [S, S], [S + ox, S - oy], [ox, S - oy]], rgb(mix(INK, f, .38)));                 // bottom face
+    poly([[0, CUT], [0, S], [ox, S - oy], [ox, CUT - oy]], rgb(mix(INK, f, .66)));                  // left face
+    poly([[ox, CUT - oy], [S + ox, -oy], [S + ox, S - oy], [ox, S - oy]], rgb(f));                  // front, 30° cut
+    return (row[i] = { c, w, h, dy: -oy - 1 });
   }
 
   function layout(){
@@ -341,7 +342,7 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
     }
     let lo = Infinity, hi = -Infinity;
     for (const k of cells) if (k.m){ lo = Math.min(lo, k.along); hi = Math.max(hi, k.along); }
-    for (const k of cells) k.delay = k.m ? .1 + (k.along - lo) / (hi - lo || 1) * 1.1 : 1;
+    for (const k of cells) k.delay = k.m ? .05 + (k.along - lo) / (hi - lo || 1) * .75 : .8;
     // the resting dot grid + background, drawn once
     grid = document.createElement('canvas'); grid.width = cv.width; grid.height = cv.height;
     const g = grid.getContext('2d'); g.scale(DPR, DPR);
@@ -349,7 +350,7 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
     g.fillStyle = 'rgba(244,241,236,.09)'; g.beginPath();
     for (const k of cells) if (!k.m) g.rect(k.cx - .8, k.cy - .8, 1.6, 1.6);
     g.fill();
-    buildSprites();
+    sprites = [[], [], []];
   }
 
   function frame(now){
@@ -358,7 +359,7 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
     ptr.k += ((ptr.on ? 1 : 0) - ptr.k) * .06;
     const sig2 = 2 * (P * 3.3) ** 2, rw2 = 2 * (P * 1.3) ** 2, pk = ptr.k > .01;
     for (let i = ripples.length - 1; i >= 0; i--) if (t - ripples[i].t > 2.6) ripples.splice(i, 1);
-    const fieldOn = Math.min(1, Math.max(0, t - .6)), wt1 = t * 1.15, wt2 = t * .72;
+    const fieldOn = Math.min(1, Math.max(0, (t - .5) * 2)), wt1 = t * 1.15, wt2 = t * .72;
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.drawImage(grid, 0, 0);
@@ -372,11 +373,11 @@ h1 .wi{display:inline-block;animation:word 1s var(--ease) both;animation-delay:c
       }
       let d;
       if (k.m){
-        const p = Math.min(1, Math.max(0, (t - k.delay) / 1.1)), e = 1 - (1 - p) ** 4;
+        const p = Math.min(1, Math.max(0, (t - k.delay) / .85)), e = 1 - (1 - p) ** 4;
         d = (.3 + (Math.sin(k.a1 - wt1) * .5 + .5) * .3 + Math.sin(k.a2 - wt2) * .08 + (k.m === 2 ? .14 : 0) + lift * .7) * e;
       } else d = lift * fieldOn;
       if (d < .05) continue;
-      const sp = sprites[k.m][Math.min(DL - 1, Math.max(0, Math.round(d / DTOP * DL) - 1))];
+      const sp = sprite(k.m, Math.min(DL - 1, Math.max(0, Math.round(d / DTOP * DL) - 1)));
       ctx.drawImage(sp.c, k.x - 1, k.y + sp.dy, sp.w, sp.h);
     }
   }
