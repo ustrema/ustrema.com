@@ -34,7 +34,17 @@ House rules: no em or en dashes in copy (the build fails on them), Microsoft pro
 
 ## Putting the site on ustrema.com
 
-The site is live now at **https://ustrema.github.io/ustrema.com/**. These steps move it to **https://ustrema.com**. Do them in this order. The domain is registered with Cloudflare, so the DNS steps happen in the Cloudflare dashboard.
+**Status (14 Oct 2026):** live at **https://ustrema.com**. The custom domain is set in Pages (the `CNAME` file), and Cloudflare serves the site with its proxy on (orange cloud). The old github.io address redirects to it.
+
+Two setups work. Use one of them, not a mix.
+
+- **A. Cloudflare proxy on (current setup).** Cloudflare issues the certificate and caches the site. GitHub cannot issue its own certificate behind the proxy, so leave GitHub's "Enforce HTTPS" off and do these steps in Cloudflare instead:
+  - **SSL/TLS** → **Overview**: set the mode to **Full**. Avoid **Flexible**: it sends traffic to GitHub unencrypted. Avoid **Full (strict)**: it fails, because GitHub has no certificate for ustrema.com.
+  - **SSL/TLS** → **Edge Certificates**: turn on **Always Use HTTPS**. At the moment http://ustrema.com still answers on plain HTTP.
+  - Then do step 1 below, the domain verification.
+- **B. DNS only (grey cloud).** GitHub issues the certificate and enforces HTTPS. Follow steps 1 to 5 below exactly.
+
+The steps below describe setup B in full. They are also the reference if the records ever need rebuilding. The domain is registered with Cloudflare, so the DNS steps happen in the Cloudflare dashboard.
 
 ### 1. Verify the domain for the GitHub organisation (5 minutes, do this first)
 
